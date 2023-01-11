@@ -1,4 +1,4 @@
-module github.com/go-moralis-sdk
+module github.com/viethapascal/go-moralis-sdk
 
 go 1.18
 

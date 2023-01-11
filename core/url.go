@@ -3,7 +3,7 @@ package core
 import (
 	"encoding/json"
 	"fmt"
-	slices2 "github.com/go-moralis-sdk/utils/slices"
+	slices2 "github.com/viethapascal/go-moralis-sdk/utils/slices"
 	"regexp"
 	"strings"
 )
