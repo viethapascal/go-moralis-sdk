@@ -96,3 +96,15 @@ func (d NFTTransactions) String() string {
 	bytes, _ := json.MarshalIndent(d, "", "\t")
 	return string(bytes)
 }
+
+type Collection struct {
+	TokenAddress string `json:"token_address"`
+	ContractType string `json:"contract_type"`
+	Name         string `json:"name"`
+	Symbol       string `json:"symbol"`
+}
+
+type NFTCollections struct {
+	PaginationResult
+	Result []Collection `json:"result"`
+}

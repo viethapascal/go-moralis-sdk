@@ -53,7 +53,7 @@ func (ub *UrlBuilder) GetEndPoint(name string) *EndpointData {
 }
 func (ub *UrlBuilder) Encode(name string, params map[string]string) string {
 	path := ub.GetEndPoint(name).Encode(params)
-	return fmt.Sprintf("%s/%s?chain=%s", ub.BaseUrl, path, ub.ChainID)
+	return fmt.Sprintf("%s%s?chain=%s", ub.BaseUrl, path, ub.ChainID)
 }
 func (e *EndpointData) Encode(params map[string]string) string {
 	//e := GetEndPoint(eps, ep)

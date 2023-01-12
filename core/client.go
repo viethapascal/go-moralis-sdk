@@ -72,16 +72,18 @@ func MoralisAPI() (*Moralis, error) {
 	//if err == nil && enableCostControl {
 	//
 	//}
-	e, err := m.GetEndpointWeight()
-	if err != nil {
-		return nil, err
-	}
-	m.Endpoints = e
+	//e, err := m.GetEndpointWeight()
+	//if err != nil {
+	//	return nil, err
+	//}
+	//m.Endpoints = e
 	m.NFT = newNFTApi(m)
-	m.Uri, err = newUrlBuilder(m)
+	uri, err := newUrlBuilder(m)
 	if err != nil {
 		return nil, err
 	}
+	m.Uri = uri
+
 	return m, nil
 }
 

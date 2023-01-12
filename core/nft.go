@@ -42,3 +42,25 @@ func (n *NFTAPI) GetNFTTransfer(wallet string, opts ...RequestOption) (*NFTTrans
 	}
 	return result, nil
 }
+
+// Collection APIs
+func (n *NFTAPI) GetNftCollection(wallet string, opts ...RequestOption) (*NFTCollections, error) {
+	//urlPath := n.Uri.Encode("getWalletNFTCollections", map[string]string{"address": wallet})
+	urlPath := fmt.Sprintf("%s/%s/nft/collections?chain=%s", n.APIUrl, wallet, n.ChainID)
+	result := &NFTCollections{}
+	err := n.Get(urlPath, result, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func (n *NFTAPI) NftMetadata(contract string, tokenId string, opts ...RequestOption) (*NFTDetail, error) {
+	urlPath := n.Uri.Encode("getTokenIdMetadata", map[string]string{"address": contract, "token_id": tokenId})
+	result := &NFTDetail{}
+	err := n.Get(urlPath, result, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}

@@ -105,3 +105,27 @@ func TestDefaultQuery(t *testing.T) {
 //	log.Println(ep.Encode(map[string]string{"address": "0x0000"}))
 //	assert.Equal(t, "/0x0000/nft/transfers", ep.Encode(map[string]string{"address": "0x0000"}))
 //}
+
+func TestNFTAPI_GetNftCollection(t *testing.T) {
+	moralis, err := MoralisAPI()
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("APIKEY:", moralis.apiKey)
+
+	wallet := "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+	ethNft := moralis.WithChainID("eth").NFT
+	collections, err := ethNft.GetNftCollection(wallet, UseDefaultQuery())
+	if err != nil {
+		log.Fatal(err)
+	}
+	bytes, err := json.MarshalIndent(collections, "", "\t")
+	//log.Println(string(bytes))
+	// Get metadata
+	metadata, err := ethNft.NftMetadata("0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB", "1", UseDefaultQuery())
+	if err != nil {
+		log.Fatal(err)
+	}
+	bytes, err = json.MarshalIndent(metadata, "", "\t")
+	log.Println(string(bytes))
+}
