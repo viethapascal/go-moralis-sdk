@@ -51,16 +51,16 @@ func (e EndpointData) String() string {
 func (ub *UrlBuilder) GetEndPoint(name string) *EndpointData {
 	return slices2.FirstObject(ub.Endpoints, func(e EndpointData) bool { return e.Endpoint == name })
 }
-func (ub *UrlBuilder) Encode(name string, params map[string]string) string {
+func (ub *UrlBuilder) Encode(name string, params Params) string {
 	path := ub.GetEndPoint(name).Encode(params)
 	return fmt.Sprintf("%s%s?chain=%s", ub.BaseUrl, path, ub.ChainID)
 }
-func (e *EndpointData) Encode(params map[string]string) string {
+func (e *EndpointData) Encode(params Params) string {
 	//e := GetEndPoint(eps, ep)
 	groups := re.FindAllStringSubmatch(e.Path, -1)
 	p := e.Path
 	for i := range groups {
-		p = strings.Replace(p, groups[i][0], params[groups[i][1]], -1)
+		p = strings.Replace(p, groups[i][0], params[groups[i][1]].(string), -1)
 	}
 	return p
 }

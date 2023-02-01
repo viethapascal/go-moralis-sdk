@@ -14,7 +14,7 @@ func newNFTApi(m *Moralis) *NFTAPI {
 
 func (n *NFTAPI) GetNFTByWallet(wallet string, opts ...RequestOption) (*WalletNFT, error) {
 	//urlPath := fmt.Sprintf("%s/%s/nft?chain=%s", n.APIUrl, wallet, n.ChainID)
-	urlPath := n.Uri.Encode("getNFTs", map[string]string{"address": wallet})
+	urlPath := n.Uri.Encode("getNFTs", Params{"address": wallet})
 	result := &WalletNFT{}
 	err := n.Get(urlPath, result, opts...)
 	if err != nil {
@@ -55,9 +55,19 @@ func (n *NFTAPI) GetNftCollection(wallet string, opts ...RequestOption) (*NFTCol
 	return result, nil
 }
 
-func (n *NFTAPI) NftMetadata(contract string, tokenId string, opts ...RequestOption) (*NFTDetail, error) {
-	urlPath := n.Uri.Encode("getTokenIdMetadata", map[string]string{"address": contract, "token_id": tokenId})
+func (n *NFTAPI) GetNFTMetadata(contract string, tokenId string, opts ...RequestOption) (*NFTDetail, error) {
+	urlPath := n.Uri.Encode("getTokenIdMetadata", Params{"address": contract, "token_id": tokenId})
 	result := &NFTDetail{}
+	err := n.Get(urlPath, result, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func (n *NFTAPI) GetCollectionMetadata(contract string, opts ...RequestOption) (*Collection, error) {
+	urlPath := n.Uri.Encode("getNFTMetadata", Params{"address": contract})
+	result := &Collection{}
 	err := n.Get(urlPath, result, opts...)
 	if err != nil {
 		return nil, err

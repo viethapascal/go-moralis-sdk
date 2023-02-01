@@ -26,6 +26,7 @@ type RequestQuery struct {
 	TokenAddresses []string `url:"token_addresses"`
 	Format         string   `url:"format"`
 }
+type Params map[string]interface{}
 
 func DefaultQuery() RequestQuery {
 	return RequestQuery{
