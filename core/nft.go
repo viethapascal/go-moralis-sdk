@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"log"
 )
 
 type NFTAPI struct {
@@ -44,13 +45,28 @@ func (n *NFTAPI) GetNFTTransfer(wallet string, opts ...RequestOption) (*NFTTrans
 }
 
 // Collection APIs
-func (n *NFTAPI) GetNftCollection(wallet string, opts ...RequestOption) (*NFTCollections, error) {
+func (n *NFTAPI) GetNftCollection(wallet string, includeNft bool, opts ...RequestOption) (*NFTCollections, error) {
 	//urlPath := n.Uri.Encode("getWalletNFTCollections", map[string]string{"address": wallet})
 	urlPath := fmt.Sprintf("%s/%s/nft/collections?chain=%s", n.APIUrl, wallet, n.ChainID)
 	result := &NFTCollections{}
 	err := n.Get(urlPath, result, opts...)
 	if err != nil {
 		return nil, err
+	}
+	if includeNft && len(result.Result) > 0 {
+		tokens := make([]string, 0)
+		for _, col := range result.Result {
+			tokens = append(tokens, col.TokenAddress)
+		}
+		log.Println("tokens:", tokens)
+		log.Println(opts)
+		nftByWallet, err := n.GetNFTByWallet(wallet, TokenAddresses(tokens...), Normalize())
+		if err != nil {
+			return nil, err
+		}
+		for i := range result.Result {
+			result.Result[i].NFTs = nftByWallet.Result
+		}
 	}
 	return result, nil
 }
@@ -65,7 +81,7 @@ func (n *NFTAPI) GetNFTMetadata(contract string, tokenId string, opts ...Request
 	return result, nil
 }
 
-func (n *NFTAPI) GetCollectionMetadata(contract string, opts ...RequestOption) (*Collection, error) {
+func (n *NFTAPI) GetCollectionMetadata(contract string, includeNft bool, opts ...RequestOption) (*Collection, error) {
 	urlPath := n.Uri.Encode("getNFTMetadata", Params{"address": contract})
 	result := &Collection{}
 	err := n.Get(urlPath, result, opts...)

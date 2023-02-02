@@ -21,7 +21,7 @@ type NFTDetail struct {
 	LastTokenURISync  time.Time       `json:"last_token_uri_sync"`
 	LastMetadataSync  time.Time       `json:"last_metadata_sync"`
 	MinterAddress     string          `json:"minter_address"`
-	NormalizedData    *NormalizedData `json:"normalized_data,omitempty"`
+	NormalizedData    *NormalizedData `json:"normalized_metadata,omitempty"`
 }
 
 type PaginationResult struct {
@@ -98,10 +98,11 @@ func (d NFTTransactions) String() string {
 }
 
 type Collection struct {
-	TokenAddress string `json:"token_address"`
-	ContractType string `json:"contract_type"`
-	Name         string `json:"name"`
-	Symbol       string `json:"symbol"`
+	TokenAddress string      `json:"token_address"`
+	ContractType string      `json:"contract_type"`
+	Name         string      `json:"name"`
+	Symbol       string      `json:"symbol"`
+	NFTs         []NFTDetail `json:"nft_list"`
 }
 
 type NFTCollections struct {

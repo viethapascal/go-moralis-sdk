@@ -13,7 +13,6 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"strings"
 )
 
 const BaseUrl = "https://deep-index.moralis.io/api/v2"
@@ -25,6 +24,7 @@ type RequestQuery struct {
 	DisableTotal   bool     `url:"disable_total"`
 	TokenAddresses []string `url:"token_addresses"`
 	Format         string   `url:"format"`
+	NormalizedData bool     `url:"normalizeMetadata"`
 }
 type Params map[string]interface{}
 
@@ -35,6 +35,7 @@ func DefaultQuery() RequestQuery {
 		DisableTotal:   true,
 		TokenAddresses: nil,
 		Format:         "decimal",
+		NormalizedData: false,
 	}
 }
 
@@ -124,6 +125,14 @@ func Limit(p int) RequestOption {
 	}
 }
 
+func Normalize() RequestOption {
+	return func(r *http.Request) {
+		q := r.URL.Query()
+		q.Set("normalizeMetadata", "true")
+		r.URL.RawQuery = q.Encode()
+	}
+}
+
 func DisableTotal(b bool) RequestOption {
 	return func(r *http.Request) {
 		q := r.URL.Query()
@@ -135,7 +144,9 @@ func DisableTotal(b bool) RequestOption {
 func TokenAddresses(addr ...string) RequestOption {
 	return func(r *http.Request) {
 		q := r.URL.Query()
-		q.Set("token_addresses", strings.Join(addr, ","))
+		for i := range addr {
+			q.Set(fmt.Sprintf("token_addresses[%d]", i), addr[i])
+		}
 		r.URL.RawQuery = q.Encode()
 	}
 }

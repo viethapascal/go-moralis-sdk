@@ -114,26 +114,29 @@ func TestNFTAPI_GetNftCollection(t *testing.T) {
 	log.Println("APIKEY:", moralis.apiKey)
 
 	wallet := "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
-	ethNft := moralis.WithChainID("eth").NFT
-	collections, err := ethNft.GetNftCollection(wallet, UseDefaultQuery())
+	ethNft := moralis.WithChainID("polygon").NFT
+	collections, err := ethNft.GetNftCollection(wallet, true, Normalize())
 	if err != nil {
 		log.Fatal(err)
 	}
 	bytes, err := json.MarshalIndent(collections, "", "\t")
-	//log.Println(string(bytes))
+	log.Println(string(bytes))
 	// Get metadata
-	metadata, err := ethNft.GetNFTMetadata("0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB", "1", UseDefaultQuery())
-	if err != nil {
-		log.Fatal(err)
-	}
-	bytes, err = json.MarshalIndent(metadata, "", "\t")
-	log.Println(string(bytes))
-	collectionMetadata, err := moralis.WithChainID("polygon").NFT.GetCollectionMetadata("0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f")
-	if err != nil {
-		log.Fatal(err)
-	}
-	bytes, err = json.MarshalIndent(collectionMetadata, "", "\t")
-	log.Println(string(bytes))
+	//metadata, err := ethNft.GetNFTMetadata(
+	//	"0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB", "1",
+	//	UseDefaultQuery(),
+	//	Normalize())
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//bytes, err = json.MarshalIndent(metadata, "", "\t")
+	//log.Println(string(bytes))
+	//collectionMetadata, err := moralis.WithChainID("polygon").NFT.GetCollectionMetadata("0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f")
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//bytes, err = json.MarshalIndent(collectionMetadata, "", "\t")
+	//log.Println(string(bytes))
 }
 
 func TestMoralis_WithChainID(t *testing.T) {
@@ -143,7 +146,7 @@ func TestMoralis_WithChainID(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = moralis.WithChainID(chainID).NFT.GetNftCollection(wallet, UseDefaultQuery())
+	_, err = moralis.WithChainID(chainID).NFT.GetNftCollection(wallet, false, Limit(1), Normalize())
 
 	if err != nil {
 		log.Fatal(err)
