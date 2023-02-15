@@ -42,11 +42,12 @@ type NormalizedData struct {
 	ExternalLink string `json:"external_link"`
 	AnimationURL string `json:"animation_url"`
 	Attributes   []struct {
-		TraitType   string `json:"trait_type"`
-		DisplayType string `json:"display_type"`
-		MaxValue    int    `json:"max_value"`
-		TraitCount  int    `json:"trait_count"`
-		Order       int    `json:"order"`
+		TraitType   string      `json:"trait_type"`
+		Value       interface{} `json:"value"`
+		DisplayType string      `json:"display_type,omitempty"`
+		MaxValue    int         `json:"max_value,omitempty"`
+		TraitCount  int         `json:"trait_count,omitempty"`
+		Order       int         `json:"order,omitempty"`
 	} `json:"attributes"`
 }
 
@@ -102,6 +103,7 @@ type Collection struct {
 	ContractType string      `json:"contract_type"`
 	Name         string      `json:"name"`
 	Symbol       string      `json:"symbol"`
+	Total        int         `json:"total"`
 	NFTs         []NFTDetail `json:"nft_list"`
 }
 

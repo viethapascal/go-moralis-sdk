@@ -65,6 +65,7 @@ func (n *NFTAPI) GetNftCollection(wallet string, includeNft bool, opts ...Reques
 			return nil, err
 		}
 		for i := range result.Result {
+			result.Result[i].Total = len(nftByWallet.Result)
 			result.Result[i].NFTs = nftByWallet.Result
 		}
 	}

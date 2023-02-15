@@ -113,8 +113,9 @@ func TestNFTAPI_GetNftCollection(t *testing.T) {
 	}
 	log.Println("APIKEY:", moralis.apiKey)
 
-	wallet := "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
-	ethNft := moralis.WithChainID("polygon").NFT
+	//wallet := "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+	wallet := "0xeBC6d76Fa16545e5eF99d78423a8108de1932bd5"
+	ethNft := moralis.WithChainID("mumbai").NFT
 	collections, err := ethNft.GetNftCollection(wallet, true, Normalize())
 	if err != nil {
 		log.Fatal(err)
